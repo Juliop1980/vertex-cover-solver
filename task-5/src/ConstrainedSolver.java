@@ -13,6 +13,7 @@ public class ConstrainedSolver {
     public static boolean twoDegreeRulePre = true;
     public static boolean dominationRulePre = true;
     public static boolean independentRulePre = true;
+    public static boolean twinRulePre = false;
 
     // Pre-processing 2
 
@@ -38,6 +39,7 @@ public class ConstrainedSolver {
     public static boolean cliqueBoundIteration = false;
     public static boolean lpBoundIteration = true;
 
+
     // Tracking params
     public static long start;
     public static boolean momc = false;
@@ -47,6 +49,7 @@ public class ConstrainedSolver {
 
     public static int applyReductionDepth = 14;
     public static int applyBoundsDepth = 24;
+    public static int momcTimeout = 50;
 
     public static boolean constraintsSatisfied(Graph graph, HashSet<Vertex> solution, HashSet<Constraint> constraints) {
         for (Constraint constraint : constraints) {
@@ -79,7 +82,7 @@ public class ConstrainedSolver {
     }
 
     public static HashSet<Vertex> solve(Graph graph, HashSet<Constraint> constraints, HashSet<Vertex> solution, HashSet<Vertex> bestFoundSolution) throws Exception {
-        if ((System.currentTimeMillis() - start) / 1000F > 50) {
+        if ((System.currentTimeMillis() - start) / 1000F > momcTimeout) {
             momc = true;
             throw new Exception("Exception message");
         }
@@ -185,7 +188,7 @@ public class ConstrainedSolver {
         start = System.currentTimeMillis();
 
         // complete preprocessing phase 1
-        ReductionRules preReduction = new ReductionRules(oneDegreeRulePre, twoDegreeRulePre, dominationRulePre, independentRulePre);
+        ReductionRules preReduction = new ReductionRules(oneDegreeRulePre, twoDegreeRulePre, dominationRulePre, independentRulePre,twinRulePre);
         LinkedList<String> reductionResult = preReduction.applyReductionRules(edges);
         Graph graph = new Graph(edges);
 
@@ -215,12 +218,13 @@ public class ConstrainedSolver {
         try {
             solution = solve(graph, constraints, new HashSet<>(), new HashSet<>(heuristicSolution));
         } catch (Exception ignored) {}
-        LinkedList<String> stringSolution = solution != null ? FastVC.getStringSolution(solution) : null;
-
-        if (momc){
-            MoMC();
-            return;
-        }
+        LinkedList<String> stringSolution = solution != null ? FastVC.getStringSolution(solution) :new LinkedList<>();
+//
+//        if (momc){
+//            System.out.println("#momc");
+//            MoMC();
+//            return;
+//        }
 
         // merge all results
         if (!reductionResult.isEmpty()) {
@@ -231,11 +235,11 @@ public class ConstrainedSolver {
             stringSolution.add(v.name);
         }
 
-        if (twinRuleBeginning) {
-            graph.undoMerges(stringSolution);
-        }
+//        if (twinRuleBeginning || twinRulePre) {
+//            graph.undoMerges(stringSolution);
+//        }
 
-        if (twoDegreeRulePre) { // must be last to undo merge for all merged cases
+        if (twoDegreeRulePre || twinRulePre) { // must be last to undo merge for all merged cases
             preReduction.undoMerge(stringSolution);
         }
 
