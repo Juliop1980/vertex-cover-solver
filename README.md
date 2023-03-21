@@ -1,5 +1,5 @@
 # Vertex Cover Solver
-This project is a collection of algorithms and heuristics for solving the vertex cover problem. The project consists of five iterations, each containing a task-X folder with handouts, READMEs, and presentations describing the features implemented in that iteration.
+This project is a collection of algorithms and heuristics for solving the vertex cover problem. The project consists of five iterations, each containing a task-X folder with handouts, READMEs, and presentations describing the features implemented in that iteration. 
 
 ## Features
 ### Iteration 1
@@ -19,7 +19,7 @@ The fourth iteration implemented multiple heuristics for solving the vertex cove
 The fifth and final iteration introduced a new branch-and-reduce algorithm with packing constraints. This algorithm added a new way to prune the search tree by using packing constraints to eliminate parts of the search space that cannot contain a feasible solution. In addition, new reduction rules were implemented to further reduce the size of the problem instance. Finally, a Maximum Clique Solver was integrated to solve some specific instances of the vertex cover problem.
 
 ## How to Run
-Each task-X folder contains a README file with instructions on how to run the implementation for that iteration. Please refer to the appropriate README file for instructions on how to run the algorithm or heuristic for that iteration.
+Each src folder in every task-X folder contains a README file with instructions on how to run the implementation for that iteration. Please refer to the appropriate README file for instructions on how to run the algorithm or heuristic for that iteration.
 
 ## Credits
 This project was developed by Denis Koshelev, Julio Cesar Perez Duran, and Julian Fechner as part of the course 'Algorithm Engineering' at the Technical University of Berlin. Big thanks to André Nichterlein and Niclas Boehmer, who guided us through this course and made it really joyful. If you have any questions or suggestions, please feel free to contact us.
